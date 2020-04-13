@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/jingyuanhe/webpack-vue#readme",
   "devDependencies": {
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-loader": "^4.0.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-merge": "^4.2.2"
