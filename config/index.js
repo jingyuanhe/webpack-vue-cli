@@ -7,7 +7,7 @@ module.exports = {
         // If true, eslint errors and warnings will also be shown in the error overlay
         // in the browser.
         showEslintErrorsInOverlay: false,
-        cssSourceMap: true,
+        cssSourceMap: true, // 开发环境开启soureMap
         // If you have problems debugging vue-files in devtools,
         // set this to false - it *may* help
         // https://vue-loader.vuejs.org/en/options.html#cachebusting
@@ -23,9 +23,11 @@ module.exports = {
         poll: false
     },
     build: {
+        index: path.resolve(__dirname, '../dist/index.html'),
         assetsRoot: path.resolve(__dirname, '../dist'),
         assetsPublicPath: '/',
-        productionSourceMap: false,
+        productionSourceMap: false, // 线上减小包体积，不启用soureceMap
         assetsSubDirectory: '', // 
+        devtool: 'source-map'
     }
 }
