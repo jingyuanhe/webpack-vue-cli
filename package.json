@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack-dev-server --inline --process --config build/webpack.dev.js",
+    "start": "npm run dev"
   },
   "repository": {
     "type": "git",
@@ -17,10 +18,27 @@
   },
   "homepage": "https://github.com/jingyuanhe/webpack-vue#readme",
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "babel-loader": "^8.1.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^3.5.2",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^4.0.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "friendly-errors-webpack-plugin": "^1.7.0",
+    "html-webpack-plugin": "^4.2.0",
+    "node-notifier": "^7.0.0",
+    "node-sass": "^4.13.1",
+    "portfinder": "^1.0.25",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^8.0.2",
+    "url-loader": "^4.1.0",
+    "vue-loader": "^15.9.1",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.11",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
