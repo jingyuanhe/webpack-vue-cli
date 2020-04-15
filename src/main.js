@@ -1,1 +1,2 @@
-console.log(111);
+import Vue from 'vue'
+import App from './App'
