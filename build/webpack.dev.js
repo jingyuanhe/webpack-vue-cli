@@ -28,13 +28,14 @@ const devWebpackConfig = merge(baseWebpackConfig,{
         },
         hot: true,
         contentBase: false, // since we use CopyWebpackPlugin.
-        compress: true,
+        compress: true, // 启用 noInfo 后，诸如「启动时和每次保存之后，那些显示的 webpack 包(bundle)信息」的消息将被隐藏
         host: HOST || config.dev.host,
         port: PORT || config.dev.port,
         open: config.dev.autoOpenBrowser,
         overlay: config.dev.errorOverlay
         ? { warnings: false, errors: true }
         : false,
+        noInfo: true,
         publicPath: config.dev.assetsPublicPath,
         proxy: config.dev.proxyTable,
         watchOptions: {
@@ -74,7 +75,7 @@ module.exports = new Promise ((resolve,reject) => {
             devWebpackConfig.devServer.port = port;
             devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({ //错误提醒
                 compilationSuccessInfo:{
-                    messages: [[`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`]]
+                    messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`]
                 },
                 onErrors: config.dev.notifyOnErrors ? utils.createNotifierCallback() : undefined  //右下角错误提示
             }))

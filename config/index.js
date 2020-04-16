@@ -20,7 +20,8 @@ module.exports = {
         errorOverlay: true,
         proxyTable: {},
         quiet: true, //// necessary for FriendlyErrorsPlugin
-        poll: false
+        poll: false,
+        useEslint: true
     },
     build: {
         index: path.resolve(__dirname, '../dist/index.html'),
