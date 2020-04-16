@@ -44,7 +44,6 @@ const webpackProdConfig = merge(webpackBaseConfig, {
                     minChunks: 2,
                     minSize: 30000
                 }
-
             },
             chunks: "all",
             minSize: 40000
@@ -59,7 +58,6 @@ const webpackProdConfig = merge(webpackBaseConfig, {
         new UglifyJsPlugin({
             uglifyOptions: {
                 compress: {  // 压缩
-                   
                 },
                 warnings: false
             },
@@ -98,35 +96,6 @@ const webpackProdConfig = merge(webpackBaseConfig, {
         new webpack.HashedModuleIdsPlugin(),
         // 预编译功能
         new webpack.optimize.ModuleConcatenationPlugin(),
-        // // 如果该模块是js文件并且在node_modules中，就会加入到vendor当中
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'vendor',
-        //     minChunks(module) {
-        //         // any required modules inside node_modules are extracted to vendor
-        //         return (
-        //             module.resource &&
-        //             /\.js$/.test(module.resource) &&
-        //             module.resource.indexOf(
-        //                 path.join(__dirname, '../node_modules')
-        //             ) === 0
-        //         )
-        //     }
-        // }),
-        // // 只有当入口文件（entry chunks） >= 3 才生效，用来在第三方库中分离自定义的公共模块
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'manifest',
-        //     minChunks: Infinity
-        // }),
-        // // This instance extracts shared chunks from code splitted chunks and bundles them
-        // // in a separate chunk, similar to the vendor chunk
-        // // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
-        // // https://segmentfault.com/a/1190000012828879?utm_source=tag-newest
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'app',
-        //     async: 'vendor-async', // async设为true时，commons chunk 将不会合并到自身，而是使用一个新的异步的commons chunk
-        //     children: true, // 指定为true的时候，就代表source chunks是通过entry chunks（入口文件）进行code split出来的children chunks
-        //     minChunks: 3
-        // }),
         // copy custom static assets
         new CopyWebpackPlugin([
             {
@@ -140,4 +109,24 @@ const webpackProdConfig = merge(webpackBaseConfig, {
         new SimpleProgressWebpackPlugin()
     ]
 })
+if (config.build.productionGzip) {
+    const CompressionWebpackPlugin = require('compression-webpack-plugin');
+    webpackProdConfig.plugins.push(new CompressionWebpackPlugin({
+        algorithm: 'gzip',
+        test: new RegExp(
+            '\\.(' +
+            config.build.productionGzipExtensions.join('|') +
+            ')$'
+        ),
+        threshold: 10240,
+        minRatio: 0.8,
+        filename: '[path].gz[query]'
+    }))
+}
+if (config.build.bundleAnalyzerReport) {
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  webpackProdConfig.plugins.push(new BundleAnalyzerPlugin({
+    analyzerPort: 8889
+  })) 
+}
 module.exports = webpackProdConfig
