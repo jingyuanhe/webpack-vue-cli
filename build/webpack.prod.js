@@ -20,6 +20,14 @@ const webpackProdConfig = merge(webpackBaseConfig, {
             usePostCSS: true
         })
     },
+    // 性能检测
+    performance: {
+        maxEntrypointSize: 1000000,
+        maxAssetSize: 200000,
+        assetFilter: function(assetFilename) {
+            return assetFilename.endsWith('.js');
+        }
+    },
     mode:env.NODE_ENV,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: config.build.productionSourceMap ? config.build.devtool : false,
@@ -36,17 +44,22 @@ const webpackProdConfig = merge(webpackBaseConfig, {
                     test: /node_modules/,
                     name: "vendor",
                     priority: 10,
-                    enforce: true
+                    enforce: true,
+                    minChunks:1
+                },
+                consoleVendor: {
+                    test: /vconsole/,
+                    priority: 20,
+                    chunks: 'all',
+                    name: 'consoleVendor'
                 },
                 // 这里定义的是在分离前被引用过两次的文件，将其一同打包到common.js中，最小为30K
                 common: {
                     name: "common",
                     minChunks: 2,
-                    minSize: 30000
-                }
+                },
             },
-            chunks: "all",
-            minSize: 40000
+            chunks: "all"
         }
     },
     plugins: [
@@ -128,5 +141,18 @@ if (config.build.bundleAnalyzerReport) {
   webpackProdConfig.plugins.push(new BundleAnalyzerPlugin({
     analyzerPort: 8889
   })) 
+}
+if (config.build.distZip) {
+    const FileManagerPlugin = require('filemanager-webpack-plugin'); //压缩成zip
+    webpackProdConfig.plugins.push(new FileManagerPlugin({
+        onEnd: {
+            delete: [
+                './www.zip',
+            ],
+            archive: [
+                {source: './dist', destination: './www.zip'},
+            ]
+        }
+    }))
 }
 module.exports = webpackProdConfig
