@@ -28,7 +28,7 @@ const webpackProdConfig = merge(webpackBaseConfig, {
             return assetFilename.endsWith('.js');
         }
     },
-    mode:env.NODE_ENV,
+    mode:'production',
     // https://webpack.js.org/configuration/devtool/#production
     devtool: config.build.productionSourceMap ? config.build.devtool : false,
     output: {

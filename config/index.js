@@ -26,7 +26,7 @@ module.exports = {
     build: {
         index: path.resolve(__dirname, '../dist/index.html'),
         assetsRoot: path.resolve(__dirname, '../dist'),
-        assetsPublicPath: '/',
+        assetsPublicPath: './',
         productionSourceMap: false, // 线上减小包体积，不启用soureceMap
         assetsSubDirectory: '', // 
         devtool: false,

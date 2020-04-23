@@ -3,6 +3,7 @@
     <div>demo</div>
     <div v-wechat-title='title'>{{count}}</div>
     <button @click="add"></button>
+    <img src="../assets/logo.png">
   </div>
 </template>
 <script>
