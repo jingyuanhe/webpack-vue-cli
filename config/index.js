@@ -1,5 +1,6 @@
 'use strict'
-const path = require('path')
+const path = require('path');
+const PROXY_API = process.env.PROXY_API;
 module.exports = {
     dev: {
         assetsPublicPath: '/', // 代表打包后，index.html里面引用资源的的相对地址
@@ -18,7 +19,15 @@ module.exports = {
         host: 'localhost', // can be overwritten by process.env.HOST
         port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         errorOverlay: true,
-        proxyTable: {},
+        proxyTable: {
+            [PROXY_API]: {
+                target: "http://localhost:3000",
+                pathRewrite: {[PROXY_API] : ""},
+                changeOrigin: false,
+                xfwd: true,
+                autoRewrite: true,
+            }
+        },
         quiet: true, //// necessary for FriendlyErrorsPlugin
         poll: false,
         useEslint: true
@@ -27,9 +36,9 @@ module.exports = {
         index: path.resolve(__dirname, '../dist/index.html'),
         assetsRoot: path.resolve(__dirname, '../dist'),
         assetsPublicPath: './',
-        productionSourceMap: false, // 线上减小包体积，不启用soureceMap
+        productionSourceMap: true, // 线上减小包体积，不启用soureceMap
         assetsSubDirectory: '', // 
-        devtool: false,
+        devtool: 'source-map',
         productionGzip: false, //压缩
         productionGzipExtensions: ['js', 'css'],
         // Run the build command with an extra argument to

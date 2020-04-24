@@ -8,6 +8,9 @@
     "start": "npm run dev",
     "build": "node build/build"
   },
+  "sideEffects": [
+    "*.css"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jingyuanhe/webpack-vue.git"
@@ -77,5 +80,6 @@
   "engines": {
     "node": ">= 6.0.0",
     "npm": ">= 3.0.0"
-  }
+  },
+  "browserslist": ["last 10 Chrome versions", "last 5 Firefox versions", "Safari >= 6", "ie> 8"]
 }

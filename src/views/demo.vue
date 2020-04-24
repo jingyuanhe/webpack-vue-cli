@@ -4,11 +4,15 @@
     <div v-wechat-title='title'>{{count}}</div>
     <button @click="add"></button>
     <img src="../assets/logo.png">
+    <span>{{page}}</span>
   </div>
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
+import { cube } from '@/lib/math.js';
+import mixin from '@/lib/publicMethods';
 export default {
+  mixins: [mixin],
   data () {
     return {
       title: 'demo'
@@ -19,6 +23,9 @@ export default {
   },
   methods: {
     ...mapMutations('common', ['add'])
+  },
+  created () {
+    console.log(cube(5));
   }
 };
 </script>

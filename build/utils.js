@@ -1,6 +1,5 @@
 const path = require('path')
 const config = require('../config')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageConfig = require('../package.json')
 exports.cssLoaders = function (options) {
     options = options || {}
@@ -31,17 +30,7 @@ exports.cssLoaders = function (options) {
           })
         })
       }
-  
-      // Extract CSS when that option is specified
-      // (which is the case during production build)
-      if (options.extract) {
-        return ExtractTextPlugin.extract({  //提取loader，如果提取失败就使用vue-style-loader  如果打包单个文件失败了,就还是利用 style-loader 写入 HTML 文件的 <style></style>
-          use: loaders,
-          fallback: 'vue-style-loader'
-        })
-      } else {
-        return ['vue-style-loader'].concat(loaders)
-      }
+      return ['vue-style-loader'].concat(loaders)
     }
   
     // https://vue-loader.vuejs.org/en/configurations/extract-css.html
@@ -62,7 +51,6 @@ exports.styleLoaders = function (options) {
   
     for (const extension in loaders) {
       const loader = loaders[extension]
-      console.log(loader);
       output.push({
         test: new RegExp('\\.' + extension + '$'),
         use: loader
