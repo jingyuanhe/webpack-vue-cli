@@ -62,12 +62,12 @@ exports.styleLoaders = function (options) {
   
     for (const extension in loaders) {
       const loader = loaders[extension]
+      console.log(loader);
       output.push({
         test: new RegExp('\\.' + extension + '$'),
         use: loader
       })
     }
-  
     return output
   }
   exports.createNotifierCallback = () => {

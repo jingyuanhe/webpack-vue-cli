@@ -77,11 +77,7 @@ module.exports = {
                   limit: 10000,
                   name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
                 }
-              },
-              {
-                test: /\.scss$/,
-                loaders: ["style", "css", "sass"]
-              } 
+              }
         ]
     },
     // 以下选项是Node.js全局变量或模块，这里主要是防止webpack注入一些Node.js的东西到vue中 
