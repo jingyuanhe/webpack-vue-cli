@@ -9,8 +9,7 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
-import { cube } from '@/lib/math.js';
-import mixin from '@/lib/publicMethods';
+import mixin from '@/utils/publicMethods';
 export default {
   mixins: [mixin],
   data () {
@@ -23,9 +22,6 @@ export default {
   },
   methods: {
     ...mapMutations('common', ['add'])
-  },
-  created () {
-    console.log(cube(5));
   }
 };
 </script>
