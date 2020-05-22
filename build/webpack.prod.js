@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path');
+const glob = require("glob")
 const utils = require('./utils');
 const merge = require('webpack-merge');
 const config = require('../config');
@@ -12,13 +13,31 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin'); //js压缩
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // css抽离
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin'); //css压缩
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin');
-const webpackProdConfig = merge(webpackBaseConfig, {
+const PurgecssPlugin = require('purgecss-webpack-plugin'); // 擦除无用的 CSS
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin"); //打包速度分析
+const smp = new SpeedMeasurePlugin();
+const PATHS = {
+    src: path.join(__dirname, './src')
+};
+const webpackProdConfig = smp.wrap(merge(webpackBaseConfig, {
     module: {
-        rules: utils.styleLoaders({
-            sourceMap: config.build.productionSourceMap,
-            extract: true,
-            usePostCSS: true
-        })
+        // rules: utils.styleLoaders({
+        //     sourceMap: config.build.productionSourceMap,
+        //     extract: true,
+        //     minimize:true,
+        //     usePostCSS: true
+        // })
+        rules: [
+            {
+              test: /\.(sa|sc|c)ss$/,
+              use: [
+                MiniCssExtractPlugin.loader,
+                'css-loader',
+                'postcss-loader',
+                'sass-loader',
+              ],
+            }
+          ]
     },
     // 性能检测
     performance: {
@@ -60,32 +79,21 @@ const webpackProdConfig = merge(webpackBaseConfig, {
                 },
             },
             chunks: "all"
-        }
+        },
+        minimizer: [
+            new OptimizeCSSPlugin()
+          ]
     },
     plugins: [
         // http://vuejs.github.io/vue-loader/en/workflow/production.html
         new webpack.DefinePlugin({
             'process.env': env
         }),
-        // https://www.webpackjs.com/plugins/uglifyjs-webpack-plugin/
-        new UglifyJsPlugin({
-            uglifyOptions: {
-                compress: {  // 压缩
-                },
-                warnings: false
-            },
-            sourceMap: config.build.productionSourceMap,
-            parallel: true // 并行
+        new PurgecssPlugin({
+            paths: glob.sync(`${PATHS.src}/**/*`,  { nodir: true }),
         }),
-        // 将CSS提取为独立的文件
         new MiniCssExtractPlugin({
             filename: utils.assetsPath('css/[name].[contenthash].css'),
-        }),
-        // https://webpack.js.org/plugins/mini-css-extract-plugin/#minimizing-for-production
-        new OptimizeCSSPlugin({
-            cssProcessorOptions: config.build.productionSourceMap
-                ? { safe: true, map: { inline: false } }
-                : { safe: true }
         }),
         // generate dist index.html with correct asset hash for caching.
         // you can customize output by editing /index.html
@@ -110,18 +118,18 @@ const webpackProdConfig = merge(webpackBaseConfig, {
         // 预编译功能
         new webpack.optimize.ModuleConcatenationPlugin(),
         // copy custom static assets
-        new CopyWebpackPlugin([
-            {
-                //from: path.resolve(__dirname, '../static'),
-                from: path.resolve(__dirname, '../src/assets'),
-                to: config.build.assetsSubDirectory,
-                ignore: ['.*']
-            }
-        ]),
+        // new CopyWebpackPlugin([
+        //     {
+        //         //from: path.resolve(__dirname, '../static'),
+        //         from: path.resolve(__dirname, '../src/assets'),
+        //         to: config.build.assetsSubDirectory,
+        //         ignore: ['.*']
+        //     }
+        // ]),
         //build progress
         new SimpleProgressWebpackPlugin()
     ]
-})
+}))
 if (config.build.productionGzip) {
     const CompressionWebpackPlugin = require('compression-webpack-plugin');
     webpackProdConfig.plugins.push(new CompressionWebpackPlugin({
