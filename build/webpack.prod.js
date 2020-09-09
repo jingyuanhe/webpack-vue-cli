@@ -55,6 +55,11 @@ const webpackProdConfig = smp.wrap(merge(webpackBaseConfig, {
         filename: utils.assetsPath('js/[name].[chunkhash].js'),
         chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
     },
+    externals: {
+        'vue': 'Vue',
+        'vue-router': 'VueRouter',
+        'vuex':'vuex'
+    },
     optimization: {
         splitChunks: {
             cacheGroups: {

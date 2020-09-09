@@ -30,7 +30,7 @@ module.exports = {
         },
         quiet: true, //// necessary for FriendlyErrorsPlugin
         poll: false,
-        useEslint: true
+        useEslint: false
     },
     build: {
         index: path.resolve(__dirname, '../dist/index.html'),
